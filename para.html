@@ -1,0 +1,359 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Paradigm</title>
+  <link href="jquery.ui.resizable.css" rel="stylesheet" type="text/css"/>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script> 
+  
+<script type="text/javascript" src="interface.js"></script>
+
+<link href="style.css" rel="stylesheet" type="text/css" />
+
+<!--[if lt IE 7]>
+ <style type="text/css">
+ .dock img { behavior: url(iepngfix.htc) }
+ </style>
+<![endif]-->
+
+<style>
+#bgimg{
+  -webkit-transition: all 0.3s ease-out; 
+     -moz-transition: all 0.3s ease-out; 
+      -ms-transition: all 0.3s ease-out; 
+       -o-transition: all 0.3s ease-out; 
+          transition: all 0.3s ease-out;
+}
+
+
+.top-bar{
+position:fixed;
+top:0px;
+width:100%;
+height: 21px;    
+border-bottom: 1px solid #444444;
+    box-shadow: 0 0 10px #141414;
+    height: 21px;
+  background-image: -ms-linear-gradient(top, #333333, #222222);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#333333), to(#222222));
+  background-image: -webkit-linear-gradient(top, #333333, #222222);
+  background-image: -o-linear-gradient(top, #333333, #222222);
+  background-image: linear-gradient(top, #333333, #222222);
+  background-image: -moz-linear-gradient(top, #E9E9E9 0%, #BBBABB 100%);
+  z-index:3;
+  }
+</style>
+<!-- for blurring the img
+<svg id="svg-image-blur" style="position:fixed">
+    <filter id="blur-effect-1">
+        <feGaussianBlur stdDeviation="3" />
+    </filter>
+</svg>	
+-->
+
+<style>
+	.draggable{ 
+	width: 90%; height: 80%; padding: 0.5em; float: left; margin: 0 10px 10px 0; border:1px solid gray; 
+    background: -webkit-linear-gradient(rgba(233, 233, 233, 1.0), rgba(178, 178, 178, 1.0) 21px, #EDEDED, #EDEDED 23px);
+	background: -moz-linear-gradient(rgba(233, 233, 233, 1.0), rgba(178, 178, 178, 1.0) 21px, #EDEDED, #EDEDED 23px);
+    border-radius: 5px;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.6), 0 11px 35px 2px rgba(0,0,0,0.56), 0 0 0 1px rgba(0, 0, 0, 0.3);
+    text-align: left;
+    position:absolute;
+	z-index:0;
+	}
+	
+	
+	nav.control-window a.close {
+    background: #FD4E4E;
+}
+nav.control-window:hover a.close {
+	background: #FD4E4E url(http://alessioatzeni.bluxart.netdna-cdn.com/mac-osx-lion-css3/res/img/buttons-hover.png) 1px 1px no-repeat;
+}
+nav.control-window a.close:active {
+    background: #c72f2b url(http://alessioatzeni.bluxart.netdna-cdn.com/mac-osx-lion-css3/res/img/buttons-hover.png) 1px 1px no-repeat;
+}
+nav.control-window a.minimize {
+    background: #F3BB55;
+}
+nav.control-window:hover a.minimize {
+    background: #F3BB55 url(http://alessioatzeni.bluxart.netdna-cdn.com/mac-osx-lion-css3/res/img/buttons-hover.png) -9px 1px no-repeat;
+}
+nav.control-window a.minimize:active {
+    background: #c7862c url(http://alessioatzeni.bluxart.netdna-cdn.com/mac-osx-lion-css3/res/img/buttons-hover.png) -9px 1px no-repeat;
+}
+nav.control-window a.maximize {
+    background: #96D16F;
+}
+nav.control-window:hover a.maximize {
+    background: #96D16F url(http://alessioatzeni.bluxart.netdna-cdn.com/mac-osx-lion-css3/res/img/buttons-hover.png) -19px 1px no-repeat;
+}
+nav.control-window a.maximize:active {
+    background: #4a8e33 url(http://alessioatzeni.bluxart.netdna-cdn.com/mac-osx-lion-css3/res/img/buttons-hover.png) -19px 1px no-repeat;
+}
+nav.control-window a.deactivate {
+    background: #b5b5b5;
+}
+nav.control-window {
+	position:absolute;
+	left:6px;
+	top:3px;
+	z-index:10;
+	height:19px;
+}
+nav.control-window a {
+    display: inline-block;
+    margin: 2px 0px 3px 1px;
+    width: 12px;
+    height: 12px;
+    border-radius: 100%;
+    box-shadow: 0px 1px 0px rgba(255,255,255,.5);
+    text-indent: -9999px;
+    position: relative;
+}
+nav.control-window a:before {
+    content: '';
+    display: block;
+    position: absolute;
+    border-radius: 100%;
+    box-shadow:inset 0 1px 4px rgba(0, 0, 0, .8);
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+    right: 0px;
+}
+nav.control-window a:after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    bottom: 1px;
+    right: 1px;
+    border-radius: 100%;
+    background: -webkit-linear-gradient(white, rgba(255, 255, 255, .9) 2%, white, rgba(255, 255, 255, .4) 16%, rgba(255, 255, 255, 0) 43%, rgba(255, 255, 255, .74), rgba(255, 255, 255, .7) 122%, rgba(255, 255, 255, .7));
+	background: -moz-linear-gradient(white, rgba(255, 255, 255, .9) 2%, white, rgba(255, 255, 255, .4) 16%, rgba(255, 255, 255, 0) 43%, rgba(255, 255, 255, .74), rgba(255, 255, 255, .7) 122%, rgba(255, 255, 255, .7));
+    box-shadow: inset 0px -3px -5px 3px rgba(255, 255, 255, 0.2), inset 0px 2px -5px 3px rgba(255, 255, 255, 0.2);
+}
+.draggable h1.titleInside {
+    position:relative;
+	bottom:17px;
+    z-index:2	;
+	color:#3c3c3c;
+	font-size:13px;
+	line-height:21px;
+	text-decoration:none;
+	text-shadow: 0 1px 1px #e7e7e7;
+	text-align:center;
+	text-transform:capitalize;
+	cursor: move;
+}
+	</style>
+	<script>
+	
+var myWidth = 0, myHeight = 0;
+if( typeof( window.innerWidth ) == 'number' ) {
+//Non-IE
+myWidth = window.innerWidth;
+myHeight = window.innerHeight;
+} else if( document.documentElement && ( document.documentElement.clientWidth || document.documentElement.clientHeight ) ) {
+//IE 6+ in 'standards compliant mode'
+myWidth = document.documentElement.clientWidth;
+myHeight = document.documentElement.clientHeight;
+} else if( document.body && ( document.body.clientWidth || document.body.clientHeight ) ) {
+//IE 4 compatible
+myWidth = document.body.clientWidth;
+myHeight = document.body.clientHeight;
+}
+//myHeight-=50;
+	$(function() {
+		$( "#set div" ).draggable({
+			stack:"#set div",
+			handle:$(this).find(".titleInside"),
+			drag: function(event,ui){
+				if(parseInt($(this).css('top'))<22){
+					$(this).css('top','22px');
+					return false;}
+			},
+			stop: function(event,ui){
+				alert($(this).css('bottom')+"-"+$(this).css('top')+" . "+$(this).height()+"-"+myHeight);
+			}
+		});
+	});
+	$(function() {
+		$(".draggable").resizable({
+			maxHeight: myHeight-100,
+			maxWidth: myWidth-50,
+			minHeight: 250,
+			minWidth: 250,
+			create: function(event,ui){
+				alert(myHeight);
+				x=$(this).height();
+				x-=40;
+				y=$(this).find(".eventPage").height();
+				m=$(this).width();
+				m-=2;
+				n=$(this).find(".eventPage").width();
+				if(x<y || m<n){
+					$(this).css('overflow','auto');
+					/*$(this).find("nav.control-window").css('top','8px');
+					$(this).find("nav.control-window").css('left','8px');
+					$(this).find("h1.titleInside").css('bottom','10px');*/
+					}
+				else{
+					$(this).css('overflow','visible');
+					/*$(this).find("nav.control-window").css('top','3px');
+					$(this).find("nav.control-window").css('left','3px');
+					$(this).find("h1.titleInside").css('bottom','17px');*/
+					}
+			},
+			resize: function(event,ui){
+				x=$(this).height();
+				x-=40;
+				y=$(this).find(".eventPage").height();
+				m=$(this).width();
+				m-=2;
+				n=$(this).find(".eventPage").width();
+				if(x<y || m<n){
+					$(this).css('overflow','auto');
+					//$(this).find("nav.control-window").css('top','5px');
+					//$(this).find("nav.control-window").css('left','6px');
+					//$(this).find("h1.titleInside").css('bottom','10px');
+					}
+				else{
+					$(this).css('overflow','visible');
+					//$(this).find("nav.control-window").css('top','3px');
+					//$(this).find("nav.control-window").css('left','3px');
+					//$(this).find("h1.titleInside").css('bottom','15px');
+					}
+			}
+		});
+	});
+	
+	topWin=function(x){
+		$(x).parent().parent().find('.draggable .control-window a').attr('class','deactivate');
+		$(x).parent().find('.control-window a:first').attr('class','close');
+		$(x).parent().find('.control-window a:nth-child(2)').attr('class','minimize');
+		$(x).parent().find('.control-window a:nth-child(3)').attr('class','maximize');
+	}
+	/*$(".draggable").bind("resize", function() {
+		alert( $(".draggable").height() ); 
+	});*/
+
+</script>
+</head>
+<body>
+<!-- dashboard-->
+<div id="dashboard" style="position:fixed;width:100%;height:100%;background:black;z-index:1000;opacity:0.4;display:none">
+</div>
+<div id="dash_cont" style="position:fixed;width:100%;height:100%;z-index:1001;display:none">
+<span id="dash_title" style="position:relative;left:40%;top:10px;background:lightgrey;font-size:50px"> Dash Board </span>
+</div>
+<div style="position:fixed;width:20px;height:20px;bottom:0px;left:0px;background:white;z-index:1002;opacity:0;" onmouseover="dashh();">
+</div>
+
+<!--bg image(seperate) for svg img blur--
+<img id="bgimg" src="images/wall2.jpg" style="z-index:-1"/>-->
+
+<!--top bar-->
+<div class="top-bar">
+<span id="left-text" style="text-decoration:none;position:absolute;left:15px;top:2px;color:#3c3c3c;text-shadow: 0 2px 2px #e7e7e7;font-size:15px;">LogoLikeApple - Paradigm - File - Edit - View - Go - Windows - Help</span>
+<!-- use twitter bootstrap for the drop downs -->
+<span id="right-text" style="text-decoration:none;position:absolute;right:15px;top:2px;color:#3c3c3c;text-shadow: 0 2px 2px #e7e7e7;font-size:15px;">wifiSymbol - soundSymbol - batterySymbol - dateTime: - Guest User</span>
+</div>
+
+
+<!--windows-->
+<div id="set">
+<div class="draggable" style="top:22px">
+	<nav class="control-window">
+    <a href="#" onclick="$(this).parent().parent().remove();return false;" class="close">deactivate</a>
+    <a href="#" class="minimize">deactivate</a>
+    <a href="#" onclick="" class="maximize">deactivate</a>
+    </nav>
+	<h1 id="header" class="titleInside" onclick="topWin(this);">1</h1>
+	<div class="eventPage" style="border:1px dotted lightgrey; word-wrap:break-word">
+	asdasd<br><br><br><br><br>asdasd
+	<br>assssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssdddddddddddddddddddddddddddddddddddddddddddd<br><br><br><br><br>asdasd<br></div>
+	<div style="background:grey;position:absolute;width:10px;height:10px;right:0px;bottom:0;"></div>
+</div>
+
+
+<div class="draggable" style="top:22px">
+	<nav class="control-window">
+    <a href="#" onclick="javascript:$(this).parent().parent().remove();return false;" class="close">deactivate</a>
+    <a href="#" class="minimize">deactivate</a>
+    <a href="#" class="maximize">deactivate</a>
+    </nav>
+	<h1 id="header" class="titleInside" onclick="topWin(this);">2</h1>
+	<div class="eventPage" style="border:1px dotted lightgrey; word-wrap:break-word">
+	asdasd<br><br><br><br><br>asdasd
+	<br>assssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssdddddddddddddddddddddddddddddddddddddddddddd<br><br><br><br><br>asdasd<br></div>
+	<div style="background:grey;position:absolute;width:10px;height:10px;right:0px;bottom:0;"></div>
+</div>
+</div>
+
+<!--bottom dock -->
+<div class="dock" id="dock2" style="z-index:500">
+  <div class="dock-container2">
+		<img src="images/right.png" style="position:absolute;left:-60px;"/>
+	  <a class="dock-item2" href="#"><span>Home</span><img src="images/home.png" alt="home"/></a> 
+	  <a class="dock-item2" href="#"><span>Contact</span><img src="images/email.png" alt="contact" /></a> 
+	  <a class="dock-item2" href="#"><span>Portfolio</span><img src="images/portfolio.png" alt="portfolio" /></a> 
+	  <a class="dock-item2" href="#"><span>Music</span><img src="images/music.png" alt="music" /></a> 
+	  <a class="dock-item2" href="#"><span>Video</span><img src="images/video.png" alt="video" /></a> 
+	  <a class="dock-item2" href="#"><span>History</span><img src="images/history.png" alt="history" /></a> 
+	  <a class="dock-item2" href="#"><span>Calendar</span><img src="images/calendar.png" alt="calendar" /></a> 
+	  <a class="dock-item2" href="#"><span>Links</span><img src="images/link.png" alt="links" /></a> 
+	  <a class="dock-item2" href="#"><span>RSS</span><img src="images/rss.png" alt="rss" /></a> 
+	  <a class="dock-item2" href="#"><span>RSS2</span><img src="images/rss2.png" alt="rss" /></a> 
+		<img src="images/left.png" style="position:absolute;right:-60px;"//>
+  </div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+  $(".dock-item2").click(function(){
+    for(i=0;i<2;i++){$(this).animate({bottom:40},"slow");
+    $(this).animate({bottom:10},"slow");}
+  });
+});
+
+dashh=function(){
+	$('#dashboard').toggle();
+	$('#dash_cont').toggle();
+/*	if($('#dashboard').css('display')=='none'){
+		$('#bgimg').css('-webkit-filter','');
+		$('#bgimg').css('filter', '');}
+	else{
+		$('#bgimg').css('-webkit-filter','blur(3px)');
+		$('#bgimg').css('filter', 'url(#blur-effect-1)');}*/
+}
+</script>  
+
+<!--dock menu JS options -->
+<script type="text/javascript">
+	
+	$(document).ready(
+		function()
+		{
+			$('#dock2').Fisheye(
+				{
+					maxWidth: 100,
+					items: 'a',
+					itemsText: 'span',
+					container: '.dock-container2',
+					itemWidth: 60,
+					proximity: 150,
+					alignment : 'left',
+					valign: 'bottom',
+					halign : 'center'
+				}
+			)
+		}
+	);
+
+</script>
+</body>
+</html>

@@ -1,29 +1,9 @@
-this is just a web development on progress... this has a lot of extra images, demos and libraries that must be removed asap.
+this is just a web development on progress... 
 
-=> the main files are:
+open file para.html
+a mac lion ui in web...
 
-1.css-dock-menu/css-dock.html
+check workLog for scope and errors encounterd...
 
-2.jq-ui/development-bundle/test.html
-
-
-scope:
-*combaining these two
-*adding twitter bootstrap for the menu bar above (css-dock.html)
-*add as many features in the menu as possible
-*changing respective icons in dock
-*the ends of dock by an appealing png, and the dock floor as well
-*writing functions to the close-minimize-maximize buttons of the window
-*clicking on a back window doesnt change top-win as the handle is set to be the title >> poosible change: the handle is cleared so that the whole win is draggable but trying to stop the drag function if the click is from anywhere else than title
-*nice background from creative team
-*minimize genie effect seems to be virtually impossible so have to settle for a nearest one >> reducing the size of the width and height and moving towards rights till it reaches the end of window, then a paper-icon can pop up in dashboard
-*full-screen view without pressing f11
-*the image blur for dashboard depending on the speed
-*ajax call to get the data for every event during a click >> possible problem: if the person browser through various events, lot of windows gets opened up slowing the website. >>possible soln: the first time a second window is opened, the person could be asked if he wanna browse with a same window for slow systems or can have many windows.
-*the hackathon page must close all windows and fire-up a terminal
-*have to write js for the terminal
-*optional>> setting box could be kept as in mac to change the fish-eye dock settings, windows -stable -draggable.single -resizable -single -multiple, user name chage (could be stored as a cookie and retrieved everytime)
-*if the user cookie is present or if he is logged in from facebook, can create a no password login page with a default pic or his fb pic to "click to login"
-
-errors:
-*while the window is dragged below, the arrow keys can be used to go down(if the wallpaper is bigger than the screen) as well as sideways>>soln: top bar and dock are made fixed so that the look stays. also the dashboard and its trigger has to be made fixed.
+features:
+< will be added soon >
