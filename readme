@@ -24,3 +24,6 @@ scope:
 *have to write js for the terminal
 *optional>> setting box could be kept as in mac to change the fish-eye dock settings, windows -stable -draggable.single -resizable -single -multiple, user name chage (could be stored as a cookie and retrieved everytime)
 *if the user cookie is present or if he is logged in from facebook, can create a no password login page with a default pic or his fb pic to "click to login"
+
+errors:
+*while the window is dragged below, the arrow keys can be used to go down(if the wallpaper is bigger than the screen) as well as sideways>>soln: top bar and dock are made fixed so that the look stays. also the dashboard and its trigger has to be made fixed.
