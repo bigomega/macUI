@@ -151,6 +151,7 @@ nav.control-window a:after {
 }
 	</style>
 	<script>
+	$(document).ready(function(){
 	
 var myWidth = 0, myHeight = 0;
 if( typeof( window.innerWidth ) == 'number' ) {
@@ -167,69 +168,79 @@ myWidth = document.body.clientWidth;
 myHeight = document.body.clientHeight;
 }
 //myHeight-=50;
-	$(function() {
-		$( "#set div" ).draggable({
-			stack:"#set div",
-			handle:$(this).find(".titleInside"),
-			drag: function(event,ui){
-				if(parseInt($(this).css('top'))<22){
-					$(this).css('top','22px');
-					return false;}
-			},
-			stop: function(event,ui){
-				alert($(this).css('bottom')+"-"+$(this).css('top')+" . "+$(this).height()+"-"+myHeight);
-			}
+
+	initDragRes=function(){
+	
+		$(function() {
+			$( "#set div" ).draggable({
+				stack:"#set div",
+				handle:$(this).find(".titleInside"),
+				drag: function(event,ui){
+					if(parseInt($(this).css('top'))<22){
+						$(this).css('top','22px');
+						return false;
+					}
+					if((myHeight - parseInt($(this).css('top')))<150){
+						$(this).css('top',(myHeight-150)+"px");
+						return false;
+					}
+				},
+				stop: function(event,ui){
+				}
+			});
 		});
-	});
-	$(function() {
-		$(".draggable").resizable({
-			maxHeight: myHeight-100,
-			maxWidth: myWidth-50,
-			minHeight: 250,
-			minWidth: 250,
-			create: function(event,ui){
-				alert(myHeight);
-				x=$(this).height();
-				x-=40;
-				y=$(this).find(".eventPage").height();
-				m=$(this).width();
-				m-=2;
-				n=$(this).find(".eventPage").width();
-				if(x<y || m<n){
-					$(this).css('overflow','auto');
-					/*$(this).find("nav.control-window").css('top','8px');
-					$(this).find("nav.control-window").css('left','8px');
-					$(this).find("h1.titleInside").css('bottom','10px');*/
+		
+		$(function() {
+			$(".draggable").resizable({
+				maxHeight: myHeight-100,
+				maxWidth: myWidth-50,
+				minHeight: 250,
+				minWidth: 250,
+				create: function(event,ui){
+					x=$(this).height();
+					x-=40;
+					y=$(this).find(".eventPage").height();
+					m=$(this).width();
+					m-=2;
+					n=$(this).find(".eventPage").width();
+					if(x<y || m<n){
+						$(this).css('overflow','auto');
+						/*$(this).find("nav.control-window").css('top','8px');
+						$(this).find("nav.control-window").css('left','8px');
+						$(this).find("h1.titleInside").css('bottom','10px');*/
 					}
-				else{
-					$(this).css('overflow','visible');
-					/*$(this).find("nav.control-window").css('top','3px');
-					$(this).find("nav.control-window").css('left','3px');
-					$(this).find("h1.titleInside").css('bottom','17px');*/
+					else{
+						$(this).css('overflow','visible');
+						/*$(this).find("nav.control-window").css('top','3px');
+						$(this).find("nav.control-window").css('left','3px');
+						$(this).find("h1.titleInside").css('bottom','17px');*/
 					}
-			},
-			resize: function(event,ui){
-				x=$(this).height();
-				x-=40;
-				y=$(this).find(".eventPage").height();
-				m=$(this).width();
-				m-=2;
-				n=$(this).find(".eventPage").width();
-				if(x<y || m<n){
-					$(this).css('overflow','auto');
-					//$(this).find("nav.control-window").css('top','5px');
-					//$(this).find("nav.control-window").css('left','6px');
-					//$(this).find("h1.titleInside").css('bottom','10px');
+				},
+				resize: function(event,ui){
+					x=$(this).height();
+					x-=40;
+					y=$(this).find(".eventPage").height();
+					m=$(this).width();
+					m-=2;
+					n=$(this).find(".eventPage").width();
+					if(x<y || m<n){
+						$(this).css('overflow','auto');
+						//$(this).find("nav.control-window").css('top','5px');
+						//$(this).find("nav.control-window").css('left','6px');
+						//$(this).find("h1.titleInside").css('bottom','10px');
 					}
-				else{
-					$(this).css('overflow','visible');
-					//$(this).find("nav.control-window").css('top','3px');
-					//$(this).find("nav.control-window").css('left','3px');
-					//$(this).find("h1.titleInside").css('bottom','15px');
+					else{
+						$(this).css('overflow','visible');
+						//$(this).find("nav.control-window").css('top','3px');
+						//$(this).find("nav.control-window").css('left','3px');
+						//$(this).find("h1.titleInside").css('bottom','15px');
 					}
-			}
+				}
+			});
 		});
-	});
+	}
+	
+	initDragRes();
 	
 	topWin=function(x){
 		$(x).parent().parent().find('.draggable .control-window a').attr('class','deactivate');
@@ -237,10 +248,23 @@ myHeight = document.body.clientHeight;
 		$(x).parent().find('.control-window a:nth-child(2)').attr('class','minimize');
 		$(x).parent().find('.control-window a:nth-child(3)').attr('class','maximize');
 	}
+	
+	maxi=function(a){
+		$(a).parent().parent().css({'top':'32px','height':(myHeight-100)+'px','left':'10px','width':(myWidth-30)+'px'});
+	}
 	/*$(".draggable").bind("resize", function() {
 		alert( $(".draggable").height() ); 
 	});*/
+	var totalWin=0;
+	openPage=function(str){
+		
+		newWindow='<div class="draggable" style="top:32px;height:'+(myHeight-100)+'px;left:10px;width:'+(myWidth-30)+'px;"><nav class="control-window"><a href="#" onclick="$(this).parent().parent().remove();return false;" class="close">deactivate</a><a href="#" class="minimize">deactivate</a><a href="#" onclick="maxi(this)" class="maximize">deactivate</a></nav><h1 id="header" class="titleInside" onclick="topWin(this);">1</h1><div class="eventPage" id="'+str+'" style="border:1px dotted lightgrey; word-wrap:break-word"><h1>'+str+'</h1><div style="background:grey;position:absolute;width:10px;height:10px;right:0px;bottom:0;"></div></div>';
+		$("#set").append(newWindow);
+		initDragRes();
+		totalWin+=1;
+	}
 
+	});
 </script>
 </head>
 <body>
@@ -257,7 +281,7 @@ myHeight = document.body.clientHeight;
 <img id="bgimg" src="images/wall2.jpg" style="z-index:-1"/>-->
 
 <!--top bar-->
-<div class="top-bar">
+<div class="top-bar" style="z-index:500">
 <span id="left-text" style="text-decoration:none;position:absolute;left:15px;top:2px;color:#3c3c3c;text-shadow: 0 2px 2px #e7e7e7;font-size:15px;">LogoLikeApple - Paradigm - File - Edit - View - Go - Windows - Help</span>
 <!-- use twitter bootstrap for the drop downs -->
 <span id="right-text" style="text-decoration:none;position:absolute;right:15px;top:2px;color:#3c3c3c;text-shadow: 0 2px 2px #e7e7e7;font-size:15px;">wifiSymbol - soundSymbol - batterySymbol - dateTime: - Guest User</span>
@@ -266,49 +290,26 @@ myHeight = document.body.clientHeight;
 
 <!--windows-->
 <div id="set">
-<div class="draggable" style="top:22px">
-	<nav class="control-window">
-    <a href="#" onclick="$(this).parent().parent().remove();return false;" class="close">deactivate</a>
-    <a href="#" class="minimize">deactivate</a>
-    <a href="#" onclick="" class="maximize">deactivate</a>
-    </nav>
-	<h1 id="header" class="titleInside" onclick="topWin(this);">1</h1>
-	<div class="eventPage" style="border:1px dotted lightgrey; word-wrap:break-word">
-	asdasd<br><br><br><br><br>asdasd
-	<br>assssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssdddddddddddddddddddddddddddddddddddddddddddd<br><br><br><br><br>asdasd<br></div>
-	<div style="background:grey;position:absolute;width:10px;height:10px;right:0px;bottom:0;"></div>
-</div>
-
-
-<div class="draggable" style="top:22px">
-	<nav class="control-window">
-    <a href="#" onclick="javascript:$(this).parent().parent().remove();return false;" class="close">deactivate</a>
-    <a href="#" class="minimize">deactivate</a>
-    <a href="#" class="maximize">deactivate</a>
-    </nav>
-	<h1 id="header" class="titleInside" onclick="topWin(this);">2</h1>
-	<div class="eventPage" style="border:1px dotted lightgrey; word-wrap:break-word">
-	asdasd<br><br><br><br><br>asdasd
-	<br>assssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssdddddddddddddddddddddddddddddddddddddddddddd<br><br><br><br><br>asdasd<br></div>
-	<div style="background:grey;position:absolute;width:10px;height:10px;right:0px;bottom:0;"></div>
-</div>
 </div>
 
 <!--bottom dock -->
 <div class="dock" id="dock2" style="z-index:500">
   <div class="dock-container2">
-		<img src="images/right.png" style="position:absolute;left:-60px;"/>
-	  <a class="dock-item2" href="#"><span>Home</span><img src="images/home.png" alt="home"/></a> 
-	  <a class="dock-item2" href="#"><span>Contact</span><img src="images/email.png" alt="contact" /></a> 
-	  <a class="dock-item2" href="#"><span>Portfolio</span><img src="images/portfolio.png" alt="portfolio" /></a> 
-	  <a class="dock-item2" href="#"><span>Music</span><img src="images/music.png" alt="music" /></a> 
-	  <a class="dock-item2" href="#"><span>Video</span><img src="images/video.png" alt="video" /></a> 
-	  <a class="dock-item2" href="#"><span>History</span><img src="images/history.png" alt="history" /></a> 
-	  <a class="dock-item2" href="#"><span>Calendar</span><img src="images/calendar.png" alt="calendar" /></a> 
-	  <a class="dock-item2" href="#"><span>Links</span><img src="images/link.png" alt="links" /></a> 
-	  <a class="dock-item2" href="#"><span>RSS</span><img src="images/rss.png" alt="rss" /></a> 
-	  <a class="dock-item2" href="#"><span>RSS2</span><img src="images/rss2.png" alt="rss" /></a> 
-		<img src="images/left.png" style="position:absolute;right:-60px;"//>
+		<img src="images/left.png" style="position:absolute;left:-24px;"/>
+	  <a class="dock-item2" href="#" onclick="openPage('home')"><span>Home</span><img src="images/FinderIcon.png" alt="home"/></a> 
+	  <a class="dock-item2" href="#"><span></span><img src="images/seperator.png" alt="portfolio" /></a> 
+	  <a class="dock-item2" href="#" onclick="openPage('prog')"><span>prog & debug</span><img src="images/prog.png" alt="contact" /></a> 
+	  <a class="dock-item2" href="#" onclick="openPage('sql')"><span>sequel</span><img src="images/sequel.png" alt="portfolio" /></a> 
+	  <a class="dock-item2" href="#" onclick="openPage('paper')"><span>paper presentation</span><img src="images/paper.png" alt="music" /></a> 
+	  <a class="dock-item2" href="#" onclick="openPage('googly')"><span>googly</span><img src="images/googly.jpg" alt="video" /></a> 
+	  <a class="dock-item2" href="#" onclick="openPage('web')"><span>web design</span><img src="images/web.png" alt="history" /></a> 
+	  <a class="dock-item2" href="#" onclick="openPage('treasure')"><span>treasure hunt</span><img src="images/piracy.png" alt="calendar" /></a> 
+	  <a class="dock-item2" href="#" onclick="openPage('dumbc')"><span>dumb c</span><img src="images/dumbc.png" alt="rss" /></a> 
+	  <a class="dock-item2" href="#" onclick="openPage('pentathalon')"><span>pentathalom</span><img src="images/pentathalon.png" alt="rss" /></a>
+	  <a class="dock-item2" href="#"><span></span><img src="images/seperator.png" alt="portfolio"/></a>  
+	  <a class="dock-item2" href="#" onclick="openPage('fb')"><span>facebook</span><img src="images/fb.png" alt="rss" /></a> 
+	  <a class="dock-item2" href="#" onclick="openPage('tw')"><span>twitter</span><img src="images/twit.png" alt="rss" /></a> 
+		<img src="images/right.png" style="position:absolute;right:-24px;"//>
   </div>
 </div>
 
