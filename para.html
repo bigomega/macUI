@@ -1,5 +1,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
+
+
+<!-- 							HAVE TO CLEAN THE CODE 
+										=> seperate the css
+											=> seperate the js 
+-->
+
+
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>Paradigm</title>
@@ -149,25 +157,26 @@ nav.control-window a:after {
 	text-transform:capitalize;
 	cursor: move;
 }
+
 	</style>
-	<script>
-	$(document).ready(function(){
+<script>
+$(document).ready(function(){
 	
-var myWidth = 0, myHeight = 0;
-if( typeof( window.innerWidth ) == 'number' ) {
-//Non-IE
-myWidth = window.innerWidth;
-myHeight = window.innerHeight;
-} else if( document.documentElement && ( document.documentElement.clientWidth || document.documentElement.clientHeight ) ) {
-//IE 6+ in 'standards compliant mode'
-myWidth = document.documentElement.clientWidth;
-myHeight = document.documentElement.clientHeight;
-} else if( document.body && ( document.body.clientWidth || document.body.clientHeight ) ) {
-//IE 4 compatible
-myWidth = document.body.clientWidth;
-myHeight = document.body.clientHeight;
-}
-//myHeight-=50;
+	var myWidth = 0, myHeight = 0;
+	if( typeof( window.innerWidth ) == 'number' ) {
+	//Non-IE
+	myWidth = window.innerWidth;
+	myHeight = window.innerHeight;
+	} else if( document.documentElement && ( document.documentElement.clientWidth || document.documentElement.clientHeight ) ) {
+	//IE 6+ in 'standards compliant mode'
+	myWidth = document.documentElement.clientWidth;
+	myHeight = document.documentElement.clientHeight;
+	} else if( document.body && ( document.body.clientWidth || document.body.clientHeight ) ) {
+	//IE 4 compatible
+	myWidth = document.body.clientWidth;
+	myHeight = document.body.clientHeight;
+	}
+	//myHeight-=50;
 
 	initDragRes=function(){
 	
@@ -252,19 +261,72 @@ myHeight = document.body.clientHeight;
 	maxi=function(a){
 		$(a).parent().parent().css({'top':'32px','height':(myHeight-100)+'px','left':'10px','width':(myWidth-30)+'px'});
 	}
+	
+	popUp=function(str){
+		checkVis=function(){
+			if($('#popup').is(':visible'))
+				$('#popup').slideUp('fast');
+		}
+		checkVis();
+		$('#popupVal').html(str);
+		$('#popup').slideDown('slow');
+		setTimeout("checkVis();",5000);
+	}
 	/*$(".draggable").bind("resize", function() {
 		alert( $(".draggable").height() ); 
 	});*/
 	var totalWin=0;
+	var wins={'home':0,'prog':0,'sql':0,'googly':0,'paper':0,'web':0,'treasure':0,'dumbc':0,'pentathalon':0};
 	openPage=function(str){
-		
-		newWindow='<div class="draggable" style="top:32px;height:'+(myHeight-100)+'px;left:10px;width:'+(myWidth-30)+'px;"><nav class="control-window"><a href="#" onclick="$(this).parent().parent().remove();return false;" class="close">deactivate</a><a href="#" class="minimize">deactivate</a><a href="#" onclick="maxi(this)" class="maximize">deactivate</a></nav><h1 id="header" class="titleInside" onclick="topWin(this);">1</h1><div class="eventPage" id="'+str+'" style="border:1px dotted lightgrey; word-wrap:break-word"><h1>'+str+'</h1><div style="background:grey;position:absolute;width:10px;height:10px;right:0px;bottom:0;"></div></div>';
-		$("#set").append(newWindow);
-		initDragRes();
-		totalWin+=1;
+		if(wins[str]==1)
+			popUp("The window is already present");
+		if(wins[str]==0){
+			newWindow='<div class="draggable" style="top:32px;height:'+(myHeight-100)+'px;left:10px;width:'+(myWidth-30)+'px;"><nav class="control-window"><a href="#" onclick="$(this).parent().parent().remove();return false;" class="close">deactivate</a><a href="#" class="minimize">deactivate</a><a href="#" onclick="maxi(this)" class="maximize">deactivate</a></nav><h1 id="header" class="titleInside" onclick="topWin(this);">'+str+'</h1><div class="eventPage" id="'+str+'" style="border:1px dotted lightgrey; word-wrap:break-word"><h1>'+str+'</h1><br/><br/><div style="font-size:12px">The contents of the event should be added here<br/><br/>*you can drag the window by clicking (only) on the title. <br/>*you can resize it through the left, bottom edge and left bottom edge corner. <br/>*there is a dashboard with a trigger in the left bottom corner of screen, move your mouse over and check it out. <br/>*minimize wont work, try the rest<br>*the icons are silly (ya i know ;p ) ideas and help are welcome </div></div><div style="background:grey;position:absolute;width:10px;height:10px;right:0px;bottom:0;"></div></div>';
+			$("#set").append(newWindow);
+			initDragRes();
+			totalWin+=1;
+			wins[str]=1;
+		}
 	}
+	
+	function DisplayClock()
+	{
+		var days = new Array('Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat');
+		// var months = new Array('January', 'February', 'March', 'April', 'May',  'June', 'July', 'August', 'September', 'October', 'November', 'December');
 
-	});
+		var now = new Date();
+		now.setTime(now.getTime());
+
+		var clockDate = days[now.getDay()];// + ', ' +  now.getDate() + ' ' +  months[now.getMonth()] + ' ' + now.getFullYear();
+
+		var hour = now.getHours();
+		var am_pm;
+		if (hour > 11)
+			am_pm = 'PM';
+		else
+			am_pm = 'AM';
+		if(hour == 0)
+			hour = '12';
+		else if (hour >12)
+			hour = hour -12;
+
+		var minute = now.getMinutes();
+		if(minute <10)
+			minute = '0' + minute;
+
+		var second = now.getSeconds();
+		if(second <10)
+			second = '0' + second;
+
+		var clockTime = hour + ':' + minute;// + ':' + second + ' ' + am_pm; 
+		var fullClock = clockDate + ' ' + clockTime;
+
+		document.getElementById('date-time').innerHTML = fullClock;
+		setTimeout("DisplayClock()",30000);
+	}
+	DisplayClock();
+
+});
 </script>
 </head>
 <body>
@@ -284,9 +346,17 @@ myHeight = document.body.clientHeight;
 <div class="top-bar" style="z-index:500">
 <span id="left-text" style="text-decoration:none;position:absolute;left:15px;top:2px;color:#3c3c3c;text-shadow: 0 2px 2px #e7e7e7;font-size:15px;">LogoLikeApple - Paradigm - File - Edit - View - Go - Windows - Help</span>
 <!-- use twitter bootstrap for the drop downs -->
-<span id="right-text" style="text-decoration:none;position:absolute;right:15px;top:2px;color:#3c3c3c;text-shadow: 0 2px 2px #e7e7e7;font-size:15px;">wifiSymbol - soundSymbol - batterySymbol - dateTime: - Guest User</span>
+<span id="right-text" style="text-decoration:none;position:absolute;right:15px;top:2px;color:#3c3c3c;text-shadow: 0 2px 2px #e7e7e7;font-size:15px;"> <img src="images/wireless-on.png"/> &nbsp <img src="images/batteryb2.png" style="height:15px;"/><span style="position:relative;top:-5px;font-size:10px"><b>(75%)</b></span> &nbsp <img src="images/speaker.png" style="height:16px"/> &nbsp <span id="date-time"></span> &nbsp <b>Guest User</b></span>
 </div>
 
+<!--pop up-->
+<div id="popup" style="background:#ededed;display:none;position:fixed;left:35%;top:-2px;width:25%;height:200px;z-index:750;border:2px solid grey;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.6), 0 11px 35px 2px rgba(0,0,0,0.56), 0 0 0 1px rgba(0, 0, 0, 0.3);">
+	<div style="height:180px">
+<h3 id="popupVal" style="text-align:center"></h3><div> &nbsp *have to minimize the rest of the windows during this action(bug fix)</div>
+	<button onclick="$('#popup').slideUp();" style="position:absolute;bottom:20px;right:20px">Close</button>
+	</div>
+</div>
 
 <!--windows-->
 <div id="set">
@@ -297,7 +367,7 @@ myHeight = document.body.clientHeight;
   <div class="dock-container2">
 		<img src="images/left.png" style="position:absolute;left:-24px;"/>
 	  <a class="dock-item2" href="#" onclick="openPage('home')"><span>Home</span><img src="images/FinderIcon.png" alt="home"/></a> 
-	  <a class="dock-item2" href="#"><span></span><img src="images/seperator.png" alt="portfolio" /></a> 
+	  <a class="dock-item2" id="seperator" href="#" style="cursor:default"><span></span><img src="images/seperator.png"/></a> 
 	  <a class="dock-item2" href="#" onclick="openPage('prog')"><span>prog & debug</span><img src="images/prog.png" alt="contact" /></a> 
 	  <a class="dock-item2" href="#" onclick="openPage('sql')"><span>sequel</span><img src="images/sequel.png" alt="portfolio" /></a> 
 	  <a class="dock-item2" href="#" onclick="openPage('paper')"><span>paper presentation</span><img src="images/paper.png" alt="music" /></a> 
@@ -306,9 +376,9 @@ myHeight = document.body.clientHeight;
 	  <a class="dock-item2" href="#" onclick="openPage('treasure')"><span>treasure hunt</span><img src="images/piracy.png" alt="calendar" /></a> 
 	  <a class="dock-item2" href="#" onclick="openPage('dumbc')"><span>dumb c</span><img src="images/dumbc.png" alt="rss" /></a> 
 	  <a class="dock-item2" href="#" onclick="openPage('pentathalon')"><span>pentathalom</span><img src="images/pentathalon.png" alt="rss" /></a>
-	  <a class="dock-item2" href="#"><span></span><img src="images/seperator.png" alt="portfolio"/></a>  
-	  <a class="dock-item2" href="#" onclick="openPage('fb')"><span>facebook</span><img src="images/fb.png" alt="rss" /></a> 
-	  <a class="dock-item2" href="#" onclick="openPage('tw')"><span>twitter</span><img src="images/twit.png" alt="rss" /></a> 
+	  <a class="dock-item2" id="seperator" href="#" style="cursor:default"><span></span><img src="images/seperator.png"/></a>  
+	  <a class="dock-item2" href="http://fb.com/groups/294849513946639/" onclick="openPage('fb')"><span>facebook</span><img src="images/fb.png" alt="rss" /></a> 
+	  <a class="dock-item2" href="http://twitter.com/paradigm2k12" onclick="openPage('tw')"><span>twitter</span><img src="images/twit.png" alt="rss" /></a> 
 		<img src="images/right.png" style="position:absolute;right:-24px;"//>
   </div>
 </div>
@@ -316,7 +386,8 @@ myHeight = document.body.clientHeight;
 <script type="text/javascript">
 $(document).ready(function(){
   $(".dock-item2").click(function(){
-    for(i=0;i<2;i++){$(this).animate({bottom:40},"slow");
+	if($(this).attr('id')!="seperator")
+    for(i=0;i<3;i++){$(this).animate({bottom:40},"slow");
     $(this).animate({bottom:10},"slow");}
   });
 });
