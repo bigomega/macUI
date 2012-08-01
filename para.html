@@ -165,6 +165,7 @@ nav.control-window a:after {
 	
 $(document).ready(function(){
 	
+	
 	var myWidth = 0, myHeight = 0;
 	if( typeof( window.innerWidth ) == 'number' ) {
 	//Non-IE
@@ -275,6 +276,7 @@ $(document).ready(function(){
 		$('#popup').slideDown('slow');
 		setTimeout("checkVis();",5000);
 	}
+	popUp("<br><h2>>>> f-11 (fullscreen) for better view<<<</h2>");
 	/*$(".draggable").bind("resize", function() {
 		alert( $(".draggable").height() ); 
 	});*/

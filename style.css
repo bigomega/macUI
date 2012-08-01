@@ -48,7 +48,7 @@ a.dock-item {
 .dock-container2 {
 	position: absolute;
 	height: 40px;
-	background: url(images/dock-bg.gif);
+	background: url(images/dockbg.png);
 	padding-left: 20px;
 }
 a.dock-item2 {
@@ -63,8 +63,13 @@ a.dock-item2 {
 	text-decoration: none;
 }
 .dock-item2 span {
+	font-size:13px;
+	color:white;
 	display: none;
 	padding-left: 20px;
+	background:rgba(50,50,50,0.7);
+	background-clip:content-box;
+	background-size:100% 150%;
 }
 .dock-item2 img {
 	border: none; 
